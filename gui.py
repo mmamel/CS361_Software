@@ -1,28 +1,50 @@
 from tkinter import * # note that module name has changed from Tkinter in Python 2 to tkinter in Python 3
 import tkinter.font as font
+from webscrapper import *
 
+originalText=''
 root = Tk()
 root.title("Aparel Researcher")
-def myClick():
-    myLabel = Label(topFrame, text= searchBar.get())
-    myLabel.grid(row=2)
-def expandTxt(widget, btn):
+
+
+
+
+def myClick(name, href ):
+    user_input = searchBar.get()
+    url = get_href(user_input, name, href)
+    originalText = get_text(url)
+
+    if len(originalText) < 150:
+        textBox.insert(INSERT, originalText)
+        textBox.pack()
+    else:
+        abbrvText=originalText[:150] + "..."
+        textBox.insert(INSERT, abbrvText)
+        textBox.pack(side=LEFT)
+        textBtn = Button(textFrame, text="+", command=lambda: expandTxt(textBox, textBtn, originalText, abbrvText))
+        myFont = font.Font(size=15)
+        textBtn['font'] = myFont
+        textBtn.pack(side=LEFT)
+
+    # myLabel = Label(topFrame, text= searchBar.get())
+    # myLabel.grid(row=2)
+def expandTxt(widget, btn, originalText, abbrvText):
     widget.destroy()
     btn.destroy()
     textBox = Text(textFrame, height=30)
     textBox.insert(INSERT, originalText)
     textBox.pack(side=LEFT)
-    textBtn = Button(textFrame, text="-", command=lambda: shrinkTxt(textBox, textBtn))
+    textBtn = Button(textFrame, text="-", command=lambda: shrinkTxt(textBox, textBtn,originalText,abbrvText))
     myFont = font.Font(size=15)
     textBtn['font'] = myFont
     textBtn.pack(side=LEFT)
-def shrinkTxt(widget, btn):
+def shrinkTxt(widget, btn,originalText, abbrvText):
     widget.destroy()
     btn.destroy()
     textBox = Text(textFrame, height=5)
     textBox.insert(INSERT, abbrvText)
     textBox.pack(side=LEFT)
-    textBtn = Button(textFrame, text="+", command=lambda: expandTxt(textBox, textBtn))
+    textBtn = Button(textFrame, text="+", command=lambda: expandTxt(textBox, textBtn,originalText,abbrvText))
     myFont = font.Font(size=15)
     textBtn['font'] = myFont
     textBtn.pack(side=LEFT)
@@ -52,34 +74,43 @@ searchBar = Entry(searchFrame, width = 50)
 searchBar.pack(side=LEFT)
 searchBar.insert(0, "Enter Apparel Company Name")
 
-searchBtn = Button(searchFrame, text="Search", command=myClick)
+name, href = get_fitness_brand("https://en.wikipedia.org/wiki/List_of_fitness_wear_brands")
+searchBtn = Button(searchFrame, text="Search", command=lambda: myClick(name, href))
 searchBtn.pack(side=LEFT)
 
 textFrame = Frame(topFrame)
 textFrame.pack()
 
-#add web scraper component here
+
 expand = False
-originalText="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+originalText=''
 abbrvText=''
 
 
 textBox = Text(textFrame, height=5)
-if len(originalText) < 150:
-    textBox.insert(INSERT, originalText)
-    textBox.pack()
-else:
-    abbrvText=originalText[:150] + "..."
-    textBox.insert(INSERT, abbrvText)
-    textBox.pack(side=LEFT)
-    textBtn = Button(textFrame, text="+", command=lambda: expandTxt(textBox, textBtn))
-    myFont = font.Font(size=15)
-    textBtn['font'] = myFont
-    textBtn.pack(side=LEFT)
+# if len(originalText) < 150:
+#     textBox.insert(INSERT, originalText)
+#     textBox.pack()
+# else:
+#     abbrvText=originalText[:150] + "..."
+#     textBox.insert(INSERT, abbrvText)
+#     textBox.pack(side=LEFT)
+#     textBtn = Button(textFrame, text="+", command=lambda: expandTxt(textBox, textBtn))
+#     myFont = font.Font(size=15)
+#     textBtn['font'] = myFont
+#     textBtn.pack(side=LEFT)
 
 
 # button_quit = Button(root, text="Exit Program", command=root.quit)
+#add web scraper component here
 
+
+
+
+
+
+
+#############################
 
 
 root.mainloop()
