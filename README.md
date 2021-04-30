@@ -1,7 +1,8 @@
 # CS361_Software
 
 Python version must be 3 or later
-Dependencies
+Dependencies:
+
 pip install beautifulsoup4
 pip install requests
 pip install tkinter
