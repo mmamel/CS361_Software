@@ -3,10 +3,11 @@
 Python version must be 3 or later
 Dependencies:
 
-pip install beautifulsoup4
-pip install requests
-pip install tkinter
+1. pip install beautifulsoup4
+2. pip install requests
+3. pip install tkinter
 
-To run, execute
+To run, execute:
+
 python gui.py
 
