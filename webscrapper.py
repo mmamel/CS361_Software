@@ -21,8 +21,11 @@ def get_text(url):
   soup = BeautifulSoup(page.text, 'html.parser')
   paragraphs = soup.find_all('p')
   text = []
-  for x in range(1, 3):
-    text.append(paragraphs[x].get_text())
+  if (len(paragraphs)<3):
+      text.append(paragraphs[1].get_text())
+  else:
+      for x in range(1, 3):
+        text.append(paragraphs[x].get_text())
   newline_text=[]
   for x in text:
     new_str = x.replace('\n', '')
