@@ -1,7 +1,18 @@
 from bs4 import BeautifulSoup
 import requests
 
-def get_data(url):
+def stockScrape(ticker):
+  root = 'https://finance.yahoo.com/quote/'
+  url = root + ticker
+  page = requests.get(url)
+  soup = BeautifulSoup(page.text, 'html.parser')
+  price = soup.find('span', {'class': 'Trsdu(0.3s) Fw(b) Fz(36px) Mb(-4px) D(ib)'}).text
+
+  print("Found stock price from yahoo finance: " + price)
+  return price;
+
+
+def getData(url):
   page = requests.get(url)
   soup = BeautifulSoup(page.text, 'html.parser')
   table = soup.table
@@ -16,7 +27,7 @@ def get_data(url):
   print(text)
 
 
-def get_text(url):
+def getText(url):
   page = requests.get(url)
   soup = BeautifulSoup(page.text, 'html.parser')
   paragraphs = soup.find_all('p')
@@ -51,7 +62,7 @@ def get_text(url):
   return text
 
 
-def get_fitness_brand(url):
+def getFitnessBrand(url):
   page = requests.get(url)
   soup = BeautifulSoup(page.text, 'html.parser')
   # list_elem = soup.find_all('li')
@@ -66,9 +77,9 @@ def get_fitness_brand(url):
     # print(link)
     href.append("https://en.wikipedia.org"+link.get('href'))
   return name, href
-name, href = get_fitness_brand("https://en.wikipedia.org/wiki/List_of_fitness_wear_brands")
+name, href = getFitnessBrand("https://en.wikipedia.org/wiki/List_of_fitness_wear_brands")
 
-def get_href(name_input, name, href):
+def getHref(name_input, name, href):
   name_input = name_input.lower()
   idx = name.index(name_input)
   return href[idx]
